@@ -10,7 +10,8 @@
     <mat-icon>add</mat-icon>
   </button>
 
-    <cdk-accordion class="shop-accordion">
+  <!--Per shop accordion-->  
+  <cdk-accordion class="shop-accordion">
         <cdk-accordion-item
           *ngFor="let list of shopList; let index = index;"
           #accordionItem="cdkAccordionItem"
@@ -28,7 +29,7 @@
             <span class="shop-accordion-item-description">
               Click to {{ accordionItem.expanded ? 'close' : 'open' }}
             </span>
-            <mat-chip-list aria-label="Fish selection">
+            <mat-chip-list>
             <mat-chip color="primary" selected>{{currency[currencySel].symbol}}{{costs[index].cost | number: '1.2-2'}}</mat-chip>
           </mat-chip-list>
           </div>
@@ -76,4 +77,17 @@
 
         </cdk-accordion-item>
       </cdk-accordion>      
+
+      <!--Total costs-->
+      <div class="total-chip">
+        <br>
+        <mat-slide-toggle [(ngModel)]="trolleyCostBool" color="primary" matTooltip="Slide to view trolley total only">
+          <mat-icon *ngIf="!trolleyCostBool" color="accent">shopping_cart</mat-icon>
+          <mat-icon *ngIf="trolleyCostBool" color="primary">shopping_cart</mat-icon>
+        </mat-slide-toggle>
+        <br>
+        <mat-chip *ngIf="!trolleyCostBool" color="warn" selected>{{currency[currencySel].symbol}}{{shoppingCosts | number: '1.2-2'}}</mat-chip>
+        <mat-chip *ngIf="trolleyCostBool" color="warn" selected>{{currency[currencySel].symbol}}{{trolleyCosts | number: '1.2-2'}}</mat-chip>
+      </div>
+
 </div>
