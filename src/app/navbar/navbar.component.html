@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <div *ngIf="(auth.isAuthenticated$ | async) === false">
+        <button mat-icon-button (click)="loginWithRedirect()">
+          <mat-icon matTooltip="please login">sentiment_dissatisfied</mat-icon>
+        </button>
+      </div>
+      <div *ngIf="auth.user$| async as user" class="nav-logout">
+        <button mat-button [matMenuTriggerFor]="menuLogout">
+          <img src="{{ user.picture }}" class="user-image">
+          <mat-icon color="accent">arrow_drop_down</mat-icon>
+        <!--Other properties: user.name, user.email-->
+        </button>
+        <mat-menu #menuLogout="matMenu">
+          <button (click)="logout()" matTooltip="log out" mat-menu-item>
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
+        <button mat-icon-button routerLink="">
+            <mat-icon matTooltip="Home">home</mat-icon>
+        </button>
+        <button mat-icon-button routerLink="">
+            <mat-icon matTooltip="Price Compare">calculate</mat-icon>
+        </button>
+        <button mat-icon-button routerLink="shopping">
+            <mat-icon matTooltip="Shopping List">shopping_bag</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<button mat-button color="accent" routerLink="items">Items</button>
+<button mat-button color="accent" routerLink="shops">Shops</button>
+<button mat-button color="accent" routerLink="shopping">Shopping List</button>
+<button *ngIf="admin==='admin'" mat-button color="accent" routerLink="admin">Admin</button>

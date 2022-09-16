@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff&display=swap');
+
+.cat {
+    height: 500px;
+    width: 500px;
+    margin: auto;
+}
+
+.welcome {
+    margin: auto;
+    min-width: 400px;
+    text-align: center;
+}
+
+.welcome-span {
+    font-family: 'DynaPuff', cursive;
+    font-size: xx-large;
+    display: inline-block;
+    line-height: 5vh;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5%;
+    border: 10px;
+    border-color: #69f0ae;
+    border-style: solid;
+}

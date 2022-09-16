@@ -1,0 +1,48 @@
+<mat-dialog-actions align="end">
+    <button mat-button color="primary" (click)="cancel()"><mat-icon>close</mat-icon></button>
+</mat-dialog-actions>
+
+<h1 mat-dialog-title>{{header}}</h1>
+<mat-dialog-content [formGroup]="itemNew" class="add-item-form">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Item name</mat-label>
+      <input matInput formControlName="itemName" type="string" placeholder="E.g Apples">
+      <!--
+      <mat-error *ngIf="itemName.hasError('required')">
+        Item name is <strong>required</strong>
+      </mat-error>
+      -->
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Amount</mat-label>
+        <input type="number" min="0" matInput formControlName="itemWeight" placeholder="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Unit</mat-label>
+        <mat-select formControlName="itemUnit">
+            <mat-option value="pc">pc</mat-option>
+            <mat-option value="mg">mg</mat-option>
+            <mat-option value="g">g</mat-option>
+            <mat-option value="kg">kg</mat-option>
+            <mat-option value="l">l</mat-option>
+            <mat-option value="ml">ml</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill">
+        <mat-label>Brand</mat-label>
+        <input type="string" matInput formControlName="itemBrand" placeholder="E.g. No name">
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button color="accent" (click)="save()" cdkFocusInitial [disabled]="itemNew.invalid">Save</button>
+  </div>
+

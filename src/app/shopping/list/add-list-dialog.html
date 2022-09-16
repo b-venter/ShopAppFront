@@ -1,0 +1,67 @@
+<mat-dialog-actions align="end">
+    <button mat-button color="accent" (click)="cancel()"><mat-icon>close</mat-icon></button>
+</mat-dialog-actions>
+
+<h1 mat-dialog-title *ngIf="!edit && !move">{{header}}</h1>
+<h1 mat-dialog-title *ngIf="edit && !move">{{header}}: {{itemInit.name}} - {{shopInit.name}} </h1>
+<h1 mat-dialog-title *ngIf="!edit && move">{{header}} {{itemInit.name}} </h1>
+
+<mat-dialog-content [formGroup]="shopList" class="add-item-form">
+
+  <mat-form-field appearance="fill" *ngIf="!edit && !move">
+      <mat-label>Item</mat-label>
+      <input matInput formControlName="listItem" type="string" placeholder="E.g Apples" [matAutocomplete]="autoItem">
+      <mat-autocomplete #autoItem="matAutocomplete">
+        <mat-option *ngFor="let option of filteredItems | async; let i = index" [value]="option" (click)="filteredItem=i">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+
+    </mat-form-field>
+    <span *ngIf="filteredItemObject && filteredItemObject?.length == 1"> {{filteredItemObject[0].brand}} </span>
+
+    <mat-form-field appearance="fill" *ngIf="!edit">
+      <mat-label>Shop</mat-label>
+      <input type="string" matInput formControlName="listShop" placeholder="E.g. Mall" [matAutocomplete]="autoShop">
+      <mat-autocomplete #autoShop="matAutocomplete">
+        <mat-option *ngFor="let shop of filteredShops | async; let i = index" [value]="shop" (click)="filteredSelect=i">
+          {{ shop }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="!move">
+      <mat-label>Price</mat-label>
+      <input type="number" min="0" matInput formControlName="listPrice" placeholder="0">
+    </mat-form-field>
+    <span *ngIf="filteredItemObject && filteredItemObject?.length == 1"> {{filteredItemObject[0].nett}}&nbsp;{{filteredItemObject[0].nett_unit}} </span>
+
+
+    <mat-checkbox matInput formControlName="listSpecial" color="accent" *ngIf="!move">On special!</mat-checkbox>
+
+
+    <mat-form-field appearance="fill" *ngIf="!move">
+        <mat-label>Quantity</mat-label>
+        <input type="number" min="0" matInput formControlName="listQty" placeholder="0">
+    </mat-form-field>
+
+    <mat-slide-toggle class="toggle-button" matTooltip="Put in the trolley" formControlName="listTrolley" *ngIf="!move">Trolley</mat-slide-toggle>
+
+    <mat-form-field appearance="fill" *ngIf="!move">
+      <mat-label>Currency</mat-label>
+        <mat-select formControlName="listCurrency">
+          <mat-option *ngFor="let mon of currency" value="{{mon.abbr}}"> {{mon.symbol}} </mat-option>
+            <!--<mat-option value="NAD">NAD</mat-option>
+            <mat-option value="ZAR">ZAR</mat-option>
+            <mat-option value="GBP">GBP</mat-option>
+            <mat-option value="USD">USD</mat-option>
+            <mat-option value="EUR">EUR</mat-option>-->
+        </mat-select>
+      </mat-form-field>
+
+  </mat-dialog-content>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button color="accent" (click)="save()" cdkFocusInitial [disabled]="shopList.invalid">Save</button>
+  </div>

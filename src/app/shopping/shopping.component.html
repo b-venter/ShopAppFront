@@ -1,0 +1,37 @@
+<div class="spinner">
+    <mat-progress-spinner *ngIf="spinner" class="example-margin" color="accent" mode="indeterminate" [value]="30">
+    </mat-progress-spinner>
+  </div>
+<div>
+    <h1 *ngIf="history">Historical view</h1>
+    <h1 *ngIf="!history">Active lists</h1>
+    <button *ngIf="history" mat-stroked-button color="primary" (click)="getHistory()">
+        Active only
+    </button>
+    <button *ngIf="!history" mat-stroked-button color="primary" (click)="getHistory()">
+        Historical
+    </button>
+    &nbsp;
+    <button mat-stroked-button color="primary" (click)="createShopList()">
+        New
+    </button>
+
+    <mat-list class="list-center">
+        <mat-list-item *ngFor="let list of visible; let index = index"> 
+            {{list.date | date : 'HH:mm, EEEE dd LLL YYYY'}} 
+            
+                <button mat-icon-button matTooltip="Click to make visible" *ngIf="list.hidden === true; else visible" (click)="toggleVisibility(list.hidden, list.id, index)">
+                    <mat-icon class="visibility" color="primary">visibility_off</mat-icon>
+                </button>
+                <ng-template #visible>
+                    <button mat-icon-button matTooltip="Click to hide" (click)="toggleVisibility(list.hidden, list.id, index)">
+                        <mat-icon class="visibility" color="accent">visibility</mat-icon>
+                    </button>
+                </ng-template>
+                <button mat-raised-button color="accent" class="list-button" [routerLink]="'/shopping/list/' + list.id">Open</button>
+                <mat-divider></mat-divider>  
+            
+        </mat-list-item>
+        
+    </mat-list>
+</div>

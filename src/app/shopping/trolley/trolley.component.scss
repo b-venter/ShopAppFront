@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff&display=swap');
+
+
+
+.close {
+    margin-left: 95%;
+    font-size: 40px;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.header {
+    font-family: 'DynaPuff', cursive;
+    font-size: xx-large;
+    display: inline-block;
+    line-height: 5vh;
+}
+
+
+table {
+    width: 70%;
+    margin: auto;
+    table-layout: fixed;
+    min-width: 500px;
+}
+
+.paginator {
+    margin: auto;
+    width: 70%;
+    min-width: 500px;
+}
+
+.spinner {
+    margin: auto;
+    width: 10%;
+}

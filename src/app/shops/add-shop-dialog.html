@@ -1,0 +1,41 @@
+<mat-dialog-actions align="end">
+    <button mat-button color="accent" (click)="cancel()"><mat-icon>close</mat-icon></button>
+</mat-dialog-actions>
+
+<h1 mat-dialog-title>{{header}}</h1>
+<mat-dialog-content [formGroup]="shopNew" class="add-item-form">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Shop name</mat-label>
+      <input matInput formControlName="shopName" type="string" placeholder="E.g The Shop">
+      <!--
+      <mat-error *ngIf="itemName.hasError('required')">
+        Item name is <strong>required</strong>
+      </mat-error>
+      -->
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Branch</mat-label>
+        <input type="string" matInput formControlName="shopBranch" placeholder="E.g. Mall">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>City</mat-label>
+      <input type="string" matInput formControlName="shopCity" placeholder="E.g. London">
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill">
+        <mat-label>Country</mat-label>
+        <input type="string" matInput formControlName="shopCountry" placeholder="E.g. Romania">
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button color="accent" (click)="save()" cdkFocusInitial [disabled]="shopNew.invalid">Save</button>
+  </div>
+
