@@ -41,6 +41,9 @@ export class ListComponent implements OnInit {
   shopList!: SList[];
   badge: number[];
   costs: Cost[] = [];
+  shoppingCosts = 0;
+  trolleyCosts = 0;
+  trolleyCostBool = false;
 
   currency :curr[] = [
     {abbr: "USD", symbol: "$", icon: "🇺🇸", value: 0},
@@ -97,9 +100,39 @@ export class ListComponent implements OnInit {
         cost += x.price * x.qty;
       }
       this.costs.push({shop: shop, cost: cost});
-      console.log(shop, cost)
     }
+
+    //Set total cost
+    this.totalShopping(this.costs);
+    this.totalTrolleys();
   }
+
+  totalShopping(c: Cost[]): void{
+    var total = 0;
+    for (let x of c) {
+      var cost = x.cost;
+      total += cost;
+    }
+    this.shoppingCosts = total;
+  }
+
+  totalTrolleys() :void{
+    var s = this.shopList;
+    var tData: SlistItem[] = [];
+    for (let i of s) {
+      this.dataService.getTrolley(this.id.toString(), i.items[0].shop_id.toString()).subscribe(
+        t => tData = t,
+        _ => console.error(),
+        () => {
+          for (let j of tData) {
+            this.trolleyCosts += j.qty * j.price;
+          }
+        }
+      );
+    }
+
+  }
+
 
   moveItemToOtherShop(b:SlistEdge, key :string): void {
     this.dataService.moveShopListItem(b, this.id.toString(), key).subscribe(
@@ -280,7 +313,7 @@ export class AddtoList implements OnInit {
     var a: Shop[]
     var b: string[] = []
     
-    this.dataService.getShopLike(value).subscribe(
+    this.dataService.getShopLike(value.toLowerCase()).subscribe(
         result => {
           a = result;
           for (let x in a) {
@@ -298,11 +331,12 @@ export class AddtoList implements OnInit {
     var a: Item[]
     var b: string[] = []
     
-    this.dataService.getItemLike(value).subscribe(
+    this.dataService.getItemLike(value.toLowerCase()).subscribe(
         result => {
           a = result;
           for (let x in a) {
             var y = a[x].name;
+            var z = a[x].brand;
             b.push(y);
           }
           this.filteredItemObject = a;

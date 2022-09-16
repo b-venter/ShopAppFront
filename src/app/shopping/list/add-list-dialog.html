@@ -10,7 +10,7 @@
 
   <mat-form-field appearance="fill" *ngIf="!edit && !move">
       <mat-label>Item</mat-label>
-      <input matInput formControlName="listItem" type="string" placeholder="E.g Apples" [matAutocomplete]="autoItem">
+      <input matInput formControlName="listItem" type="string" placeholder="E.g Apples" [matAutocomplete]="autoItem" [style.textTransform]="'lowercase'">
       <mat-autocomplete #autoItem="matAutocomplete">
         <mat-option *ngFor="let option of filteredItems | async; let i = index" [value]="option" (click)="filteredItem=i">
           {{option}}
@@ -18,11 +18,11 @@
       </mat-autocomplete>
 
     </mat-form-field>
-    <span *ngIf="filteredItemObject && filteredItemObject?.length == 1"> {{filteredItemObject[0].brand}} </span>
+    <span *ngIf="filteredItemObject"> {{filteredItemObject[filteredItem].brand}} </span>
 
     <mat-form-field appearance="fill" *ngIf="!edit">
       <mat-label>Shop</mat-label>
-      <input type="string" matInput formControlName="listShop" placeholder="E.g. Mall" [matAutocomplete]="autoShop">
+      <input type="string" matInput formControlName="listShop" placeholder="E.g. Mall" [matAutocomplete]="autoShop" [style.textTransform]="'lowercase'">
       <mat-autocomplete #autoShop="matAutocomplete">
         <mat-option *ngFor="let shop of filteredShops | async; let i = index" [value]="shop" (click)="filteredSelect=i">
           {{ shop }}
