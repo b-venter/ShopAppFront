@@ -307,6 +307,7 @@ export class AddtoList implements OnInit {
   filteredItem: number = 0;
   filteredItems!: Observable<string[]>;
   filteredItemObject!: Item[] | undefined;
+  itemSearchLive = true;
 
   private shopFilter(value: string): string[] {
 
@@ -409,7 +410,7 @@ export class AddtoList implements OnInit {
           {
             form: this.shopList.value,
             shop: this.filteredShopObject !== undefined ? this.filteredShopObject[this.filteredSelect].id : this.shopInit.id,
-            item: this.filteredItemObject !== undefined ? this.filteredItemObject[this.filteredItem].id : this.itemInit.id,
+            item: this.filteredItemObject !== undefined ? this.filteredItemObject[0].id : this.itemInit.id,
           }
         );  
     }
@@ -435,6 +436,24 @@ export class AddtoList implements OnInit {
         this.dataService.getShop(this.shopId).subscribe(result => this.shopInit = result);
         this.dataService.getItem(this.itemId).subscribe(result => this.itemInit = result);
       }
+    }
+
+    //When clicked, set array to contain only clicked item
+    selectItem(s: number) :void{
+      if (this.filteredItemObject) {
+        var a = this.filteredItemObject[s];
+        this.filteredItemObject = [];
+        this.filteredItemObject.push(a);
+        this.itemSearchLive = false;
+        console.log(this.filteredItemObject);
+      }
+    }
+
+    clearItems() :void{
+      this.itemSearchLive=true;
+      this.shopList.patchValue({
+        listItem: "",
+      })
     }
 
     
