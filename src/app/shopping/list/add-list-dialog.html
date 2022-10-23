@@ -8,38 +8,59 @@
 
 <mat-dialog-content [formGroup]="shopList" class="add-item-form">
 
+  <!--ITEM-->
   <mat-form-field appearance="fill" *ngIf="!edit && !move">
-      <mat-label>Item</mat-label>
-      <input matInput formControlName="listItem" type="string" placeholder="E.g Apples" [matAutocomplete]="autoItem" [style.textTransform]="'lowercase'">
-      <mat-autocomplete #autoItem="matAutocomplete">
-        <mat-option *ngFor="let option of filteredItems | async; let i = index" [value]="option" (click)="filteredItem=i">
-          {{option}}
-        </mat-option>
-      </mat-autocomplete>
-
+      <mat-label>Item search</mat-label>
+      <input matInput formControlName="listItem" type="string" placeholder="E.g Apples" [style.textTransform]="'lowercase'">
     </mat-form-field>
-    <span *ngIf="filteredItemObject"> {{filteredItemObject[filteredItem].brand}} </span>
 
+    <mat-list *ngIf="itemSearchLive">
+      <mat-list-item *ngFor="let option of filteredItems | async; let i = index">
+        <span *ngIf="filteredItemObject">
+          {{filteredItemObject[i].name}} - {{filteredItemObject[i].brand}} ({{filteredItemObject[i].nett}}{{filteredItemObject[i].nett_unit}})
+          <mat-icon (click)="selectItem(i)" class="cursor">
+            done
+          </mat-icon>
+        </span>
+      </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="!itemSearchLive">
+      <mat-list-item *ngFor="let item of filteredItemObject">
+        <span>
+          {{item.name}} - {{item.brand}} ({{item.nett}}{{item.nett_unit}})
+          <mat-icon (click)="clearItems()" class="cursor">
+            cancel
+          </mat-icon>
+        </span>
+      </mat-list-item>
+    </mat-list>
+
+    <!--SHOP-->
     <mat-form-field appearance="fill" *ngIf="!edit">
       <mat-label>Shop</mat-label>
       <input type="string" matInput formControlName="listShop" placeholder="E.g. Mall" [matAutocomplete]="autoShop" [style.textTransform]="'lowercase'">
       <mat-autocomplete #autoShop="matAutocomplete">
+        <!--TODO: The (click) event doesn't make sense. The array it is working on will most likely change as soon as the element is clicked, makig the i irrelevant-->
         <mat-option *ngFor="let shop of filteredShops | async; let i = index" [value]="shop" (click)="filteredSelect=i">
           {{ shop }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
 
+    <!--PRICE-->
     <mat-form-field appearance="fill" *ngIf="!move">
       <mat-label>Price</mat-label>
       <input type="number" min="0" matInput formControlName="listPrice" placeholder="0">
     </mat-form-field>
+
+    <!--TODO: what if filteredItemObject?.length is > 1?? Add a ngIf-->
     <span *ngIf="filteredItemObject && filteredItemObject?.length == 1"> {{filteredItemObject[0].nett}}&nbsp;{{filteredItemObject[0].nett_unit}} </span>
 
 
     <mat-checkbox matInput formControlName="listSpecial" color="accent" *ngIf="!move">On special!</mat-checkbox>
 
 
+    <!--QUANTITY-->
     <mat-form-field appearance="fill" *ngIf="!move">
         <mat-label>Quantity</mat-label>
         <input type="number" min="0" matInput formControlName="listQty" placeholder="0">
