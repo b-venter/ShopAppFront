@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ViewChild,ElementRef } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 
 import { DataService } from '../data.service';
 import { SList, ShopListsAll } from '../interfaces';
@@ -13,11 +15,13 @@ export class ShoppingComponent implements OnInit {
   spinner:boolean;
   visible!: ShopListsAll[];
   history = false;
+
   
   constructor(
     private dataService: DataService,
   ) { 
     this.spinner = true;
+
   }
 
   ngOnInit(): void {
@@ -70,6 +74,32 @@ export class ShoppingComponent implements OnInit {
        }
       }
     );
+  }
+
+  
+  //TODO: This should really b done as a custom directive
+  //https://angular.io/guide/template-reference-variables#accessing-in-a-nested-template
+  //https://ultimatecourses.com/blog/element-refs-in-angular-templates
+  reset(a: HTMLInputElement, b: MatIcon, c: ShopListsAll)
+  {
+    var text = a.value;
+    if(a.disabled == true){
+      a.disabled = false;
+      b._elementRef.nativeElement.innerHTML = "done";
+    } else {
+      b._elementRef.nativeElement.innerHTML = "hourglass_full";
+      c.label = a.value;
+      this.dataService.updateShopList(c, c.id).subscribe(
+        success => {
+          a.disabled = true;
+          b._elementRef.nativeElement.innerHTML = "edit";
+        },
+        error => console.error(error)
+      );
+    }
+    //a.disabled = false;
+    //b._elementRef.nativeElement.innerHTML = "done";
+    //console.log(b._elementRef.nativeElement.innerHTML);
   }
 
 }

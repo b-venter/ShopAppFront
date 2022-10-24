@@ -102,6 +102,12 @@ export class DataService {
     return this.http.patch<ShopListsAll>(this.baseUrl + api + id, body)
   }
 
+  //Update Shopping List name, date
+  updateShopList(body: ShopListsAll, id: string): Observable<any> {
+    var api = "/shoppinglist/edit/"
+    return this.http.patch<ShopListsAll>(this.baseUrl + api + id, body)
+  }
+
   updateTrolley(body: SlistEdgeItem, id: string, id2: string): Observable<any> {
     var api = "/shoppinglist/trolley/"
     return this.http.patch<SlistEdgeItem>(this.baseUrl + api + id + "/" + id2, body)

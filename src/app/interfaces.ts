@@ -73,6 +73,7 @@ export interface ShopListsAll {
 	name: string;
 	date: Date;
 	hidden: boolean;
+	label: string | Date;
 }
 
 export interface SlistEdgeItem {
