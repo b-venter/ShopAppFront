@@ -24,6 +24,7 @@ export class TrolleyComponent implements OnInit, AfterViewInit {
 
   costs: number = 0;
   shopDetail!: Shop;
+  
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

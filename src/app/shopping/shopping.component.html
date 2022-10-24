@@ -18,7 +18,12 @@
 
     <mat-list class="list-center">
         <mat-list-item *ngFor="let list of visible; let index = index"> 
-            {{list.date | date : 'HH:mm, EEEE dd LLL YYYY'}} 
+            <!--<span *ngIf="!edit" (click)="edit=true">{{list.date | date : 'HH:mm, EEEE dd LLL YYYY'}}</span> -->
+              
+            <input #activateInput matInput disabled="true" [value]="list.label ? list.label : list.date" class="slist-input">
+            <button mat-icon-button matTooltip="Rename shopping list">
+                <mat-icon #editIcon color="accent" (click)="reset(activateInput, editIcon, list)">edit</mat-icon>
+            </button>
             
                 <button mat-icon-button matTooltip="Click to make visible" *ngIf="list.hidden === true; else visible" (click)="toggleVisibility(list.hidden, list.id, index)">
                     <mat-icon class="visibility" color="primary">visibility_off</mat-icon>
@@ -28,7 +33,10 @@
                         <mat-icon class="visibility" color="accent">visibility</mat-icon>
                     </button>
                 </ng-template>
+                <span class="slist -date">{{list.date | date : 'dd LLL YYYY'}}</span>
                 <button mat-raised-button color="accent" class="list-button" [routerLink]="'/shopping/list/' + list.id">Open</button>
+
+
                 <mat-divider></mat-divider>  
             
         </mat-list-item>

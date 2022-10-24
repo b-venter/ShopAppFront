@@ -15,3 +15,14 @@
     margin: auto;
     width: 10%;
 }
+
+.slist-input:disabled {
+    background: #303030;
+    color: white;
+    border: none;
+    font-size: larger;
+}
+
+.slist-date {
+    font-size: xx-small;
+}
