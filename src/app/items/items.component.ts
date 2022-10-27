@@ -43,15 +43,16 @@ export class ItemsComponent implements OnInit, AfterViewInit {
   }
 
   getItems(): void {
-    this.dataService.getItemsAll().subscribe(
-      items => {
+    this.dataService.getItemsAll().subscribe({
+      next: (items) => {
         this.dataSource.data = items;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         console.log(this.sort);
       },
-      _ => console.error(),
-      () => this.spinner = false
+      error: e => console.error(e),
+      complete: () => this.spinner = false
+    }
     );
   }
 

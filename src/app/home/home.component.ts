@@ -24,11 +24,11 @@ export class HomeComponent implements OnInit {
 
   Cat() :void {
     var url: Cats[]
-    this.dataService.getCat().subscribe(
-        result => url = result,
-        error => console.error(error),
-        () => this.cat = url[0].url,
-    );
+    this.dataService.getCat().subscribe({
+      next: (result) => url = result,
+      error: (e) => console.error(e),
+      complete: () => this.cat = url[0].url,
+    });
   }
 
 }

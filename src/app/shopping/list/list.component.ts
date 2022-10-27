@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import {Observable} from 'rxjs';
+import {Observable, Observer} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 
@@ -72,10 +72,11 @@ export class ListComponent implements OnInit {
   }
 
   getShoppingList(): void {
-    this.dataService.getShoppingList(this.id.toString()).subscribe(
-      list => this.shopList = list,
-      err=> console.log(err),
-      () => this.setTrolleyInit(),
+    this.dataService.getShoppingList(this.id.toString()).subscribe({
+      next: (list) => this.shopList = list,
+      error: (err)=> console.log(err),
+      complete: () => this.setTrolleyInit(),
+    }
     );
     
   }
@@ -494,11 +495,13 @@ export class TrendItemDialog implements OnInit {
     this.getTrend(this.item); 
   }
 
+  //For reference: correct/updated implementation of subscribe
   getTrend(i: string){
-    this.dataService.getTrendItem(i).subscribe(
-      res => this.trend = res,
-      err => console.error(err),
-      () => this.chartData()
+    this.dataService.getTrendItem(i).subscribe({
+      next: (res) => this.trend = res,
+      error: (err) => console.error(err),
+      complete: () => this.chartData()
+    }
     );
   }
 

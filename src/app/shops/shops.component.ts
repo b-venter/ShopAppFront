@@ -43,10 +43,11 @@ export class ShopsComponent implements OnInit, AfterViewInit {
   }
 
   getShops(): void {
-    this.dataService.getShopsAll().subscribe(
-      shops => this.dataSource.data = shops,
-      _ => console.error(),
-      () => this.spinner = false
+    this.dataService.getShopsAll().subscribe({
+      next: (shops) => this.dataSource.data = shops,
+      error: e => console.error(e),
+      complete: () => this.spinner = false
+    }
     );
   }
 
