@@ -50,14 +50,14 @@ export class TrolleyComponent implements OnInit, AfterViewInit {
   }
 
   getTrolley() {
-    this.dataService.getTrolley(this.id.toString(), this.shop.toString()).subscribe(
-      t => this.dataSource.data = t,
-      _ => console.error(),
-      () => {
+    this.dataService.getTrolley(this.id.toString(), this.shop.toString()).subscribe({
+      next: (t) => this.dataSource.data = t,
+      error: e => console.error(e),
+      complete: () => {
         this.spinner = false;
         this.setTrolleyInit();
       }
-    );
+    });
   }
 
   getShop() {

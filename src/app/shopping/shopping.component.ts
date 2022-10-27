@@ -30,10 +30,11 @@ export class ShoppingComponent implements OnInit {
 
   getVisibleLists(): void {
     this.spinner = true;
-    this.dataService.getListsVis().subscribe(
-      lists => this.visible = lists,
-      _ => console.error(),
-      () => this.spinner = false
+    this.dataService.getListsVis().subscribe({
+      next: (lists) => this.visible = lists,
+      error: (e) => console.error(e),
+      complete: () => this.spinner = false
+    }
     );
   }
 
@@ -41,10 +42,11 @@ export class ShoppingComponent implements OnInit {
     this.history = !this.history;
     if (this.history) {
       this.spinner = true;
-      this.dataService.getListsAll().subscribe(
-        lists => this.visible = lists,
-        _ => console.error(),
-        () => this.spinner = false
+      this.dataService.getListsAll().subscribe({
+        next: (lists) => this.visible = lists,
+        error: (e) => console.error(e),
+        complete: () => this.spinner = false
+      }
       );
     } else {
       this.getVisibleLists();
@@ -89,12 +91,13 @@ export class ShoppingComponent implements OnInit {
     } else {
       b._elementRef.nativeElement.innerHTML = "hourglass_full";
       c.label = a.value;
-      this.dataService.updateShopList(c, c.id).subscribe(
-        success => {
+      this.dataService.updateShopList(c, c.id).subscribe({
+        next: (success) => {
           a.disabled = true;
           b._elementRef.nativeElement.innerHTML = "edit";
         },
-        error => console.error(error)
+        error: error => console.error(error)
+      }
       );
     }
     //a.disabled = false;
