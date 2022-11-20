@@ -16,6 +16,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { AdminComponent } from './admin/admin.component';
 import { TrolleyComponent } from './shopping/trolley/trolley.component';
+import { TemplatesComponent } from './shopping/templates/templates.component';
+import { DetailsComponent, AddtoTpl } from './shopping/templates/details/details.component';
 
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -64,7 +66,10 @@ import { NgChartsModule } from 'ng2-charts';
     AddtoList,
     TrendItemDialog,
     AdminComponent,
-    TrolleyComponent
+    TrolleyComponent,
+    TemplatesComponent,
+    DetailsComponent,
+    AddtoTpl
   ],
   imports: [
     BrowserModule,

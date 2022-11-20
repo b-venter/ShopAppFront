@@ -1,0 +1,62 @@
+<mat-dialog-actions align="end">
+    <button mat-button color="accent" (click)="cancel()"><mat-icon>close</mat-icon></button>
+</mat-dialog-actions>
+
+<h1 mat-dialog-title *ngIf="!edit && !move">{{header}}</h1>
+<h1 mat-dialog-title *ngIf="edit && !move">{{header}}: {{itemInit.name}} - {{shopInit.name}} </h1>
+<h1 mat-dialog-title *ngIf="!edit && move">{{header}} {{itemInit.name}} </h1>
+
+<mat-dialog-content [formGroup]="templateForm" class="add-item-form">
+
+  <!--ITEM-->
+  <mat-form-field appearance="fill" *ngIf="!edit && !move">
+      <mat-label>Item search</mat-label>
+      <input matInput formControlName="listItem" type="string" placeholder="E.g Apples" [style.textTransform]="'lowercase'">
+    </mat-form-field>
+
+    <mat-list *ngIf="itemSearchLive">
+      <mat-list-item *ngFor="let option of filteredItems | async; let i = index">
+        <span *ngIf="filteredItemObject">
+          {{filteredItemObject[i].name}} - {{filteredItemObject[i].brand}} ({{filteredItemObject[i].nett}}{{filteredItemObject[i].nett_unit}})
+          <mat-icon (click)="selectItem(i)" class="cursor">
+            add
+          </mat-icon>
+        </span>
+      </mat-list-item>
+    </mat-list>
+    <mat-list *ngIf="!itemSearchLive">
+      <mat-list-item *ngFor="let item of filteredItemObject">
+        <span>
+          {{item.name}} - {{item.brand}} ({{item.nett}}{{item.nett_unit}})
+          <mat-icon (click)="clearItems()" class="cursor">
+            cancel
+          </mat-icon>
+        </span>
+      </mat-list-item>
+    </mat-list>
+
+    <!--SHOP-->
+    <mat-form-field appearance="fill" *ngIf="!edit">
+      <mat-label>Shop</mat-label>
+      <input type="string" matInput formControlName="listShop" placeholder="E.g. Mall" [matAutocomplete]="autoShop" [style.textTransform]="'lowercase'">
+      <mat-autocomplete #autoShop="matAutocomplete">
+        <!--TODO: The (click) event doesn't make sense. The array it is working on will most likely change as soon as the element is clicked, makig the i irrelevant-->
+        <mat-option *ngFor="let shop of filteredShops | async; let i = index" [value]="shop" (click)="filteredSelect=i">
+          {{ shop }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+
+    <!--QUANTITY-->
+    <mat-form-field appearance="fill" *ngIf="!move">
+        <mat-label>Quantity</mat-label>
+        <input type="number" min="0" matInput formControlName="listQty" placeholder="0">
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button color="accent" (click)="save()" cdkFocusInitial [disabled]="templateForm.invalid">Save</button>
+  </div>

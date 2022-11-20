@@ -1,0 +1,78 @@
+<div class="spinner">
+    <mat-progress-spinner *ngIf="spinner" class="example-margin" color="accent" mode="indeterminate" [value]="30">
+    </mat-progress-spinner>
+  </div>
+
+  <h1>Template: name</h1>
+
+  <button mat-mini-fab matTooltip="Add item to template" *ngIf="get200or204" (click)="addDialog()">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <!--
+  <div *ngIf="template">
+    <div *ngFor="let t of template">
+        {{t.shop}} 
+        <div *ngFor="let i of t.items">
+          {{i.label}} - {{i.nett}}{{i.nett_unit}} - {{i.qty}}
+        </div>
+    </div>
+</div> -->
+
+  <!--Per shop accordion-->  
+  <cdk-accordion class="shop-accordion">
+    <cdk-accordion-item
+      *ngFor="let t of template; let index = index;"
+      #accordionItem="cdkAccordionItem"
+      class="shop-accordion-item"
+      role="button"
+      tabindex="0"
+      [attr.id]="'accordion-header-' + index"
+      [attr.aria-expanded]="accordionItem.expanded"
+      [attr.aria-controls]="'accordion-body-' + index">
+      <div class="shop-accordion-item-header" (click)="accordionItem.toggle()">
+        {{ t.shop }}
+        <span class="shop-accordion-item-description">
+          Click to {{ accordionItem.expanded ? 'close' : 'open' }}
+        </span>
+      </div>
+
+      <div
+        class="shop-accordion-item-body"
+        role="region"
+        [style.display]="accordionItem.expanded ? '' : 'none'"
+        [attr.id]="'accordion-body-' + index"
+        [attr.aria-labelledby]="'accordion-header-' + index">
+
+        <mat-list>
+            <mat-divider></mat-divider>
+            <mat-list-item *ngFor="let items of t.items; let in2 = index">
+              <button mat-icon-button (click)="editDialog(items, t.shop)">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+                <span>{{items.qty}}x&nbsp;{{items.nett}}{{items.nett_unit}}</span> &nbsp;{{items.label}}
+
+                <button mat-icon-button matTooltip="Move to another trolley" (click)="moveDialog(items, t.shop)" class="toggle-button">
+                  <mat-icon color="accent">low_priority</mat-icon>
+                </button>
+
+                <button mat-icon-button matTooltip="View price trend" class="toggle-button" (click)="trendDialog(items.item_id)">
+                  <mat-icon color="accent">trending_up</mat-icon>
+                </button>
+                
+
+                <button mat-icon-button matTooltip="Remove from shopping list" (click)="delShopListItem(items.edge_id)">
+                  <mat-icon color="warn">
+                    delete
+                  </mat-icon>
+                </button>
+
+                <mat-divider></mat-divider>  
+            </mat-list-item>
+        </mat-list>
+
+      </div>
+
+    </cdk-accordion-item>
+  </cdk-accordion>

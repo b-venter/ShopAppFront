@@ -68,6 +68,31 @@ export interface SList {
 }
 
 
+export interface TplDtl {
+	shop:  string;
+	items: TplItem[];
+}
+
+//Mix of edge and vertice (Item) info, similar to SlistItem but stripped down for Templates
+export interface TplItem {
+	label:	string;
+	nett:	number;
+	nett_unit:	string;
+	qty:	number;
+	tag:	 string;
+	edge_id:	string;
+	item_id:	string;
+	shop_id:	string
+}
+
+export interface TplEdge {
+	"_to":	string;
+	"_from":	string;
+	qty:	number;
+}
+
+
+//TODO:Same interface applies to Templates
 export interface ShopListsAll {
 	id: string;
 	name: string;

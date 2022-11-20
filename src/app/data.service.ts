@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 import { environment as env } from '../environments/environment';
 
-import { Item, ItemNew, Shop, ShopNew, SList, ShopListsAll, SlistItem, SlistEdge, SlistEdgeItem, AdmUser, TrendItem, Cats } from './interfaces';
+import { Item, ItemNew, Shop, ShopNew, SList, ShopListsAll, SlistItem, SlistEdge, SlistEdgeItem, AdmUser, TrendItem, TplDtl, TplItem, TplEdge, Cats } from './interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -118,6 +118,11 @@ export class DataService {
     return this.http.post<any>(this.baseUrl + api, '');
   }
 
+  makeShoppingList(id: string): Observable<any> {
+    var api = "/shoppinglist/make/"
+    return this.http.post<any>(this.baseUrl + api + id, '');
+  }
+
   addShopListItems(body: SlistEdge, id: string): Observable<any> {
     var api = "/shoppinglist/additem/"
     return this.http.patch<SlistEdge>(this.baseUrl + api + id, body)
@@ -130,6 +135,59 @@ export class DataService {
 
   delShopListItems(id: string, key: string): Observable<any> {
     var api = "/shoppinglist/delete/item/"
+    return this.http.delete<any>(this.baseUrl + api + id + "/" + key)
+  }
+
+  //ShoppingList Templates
+  getTemplatesAll(): Observable<ShopListsAll[]> {
+    var api = "/shoppinglist"
+    return this.http.get<ShopListsAll[]>(this.baseUrl + api + "/templates");
+  }
+
+  getTemplateDetails(id: string): Observable<TplDtl[]> {
+    var api = "/shoppinglist/templates/details/"
+    return this.http.get<TplDtl[]>(this.baseUrl + api + id);
+  }
+
+  enableTemplates(): Observable<any> {
+    var api = "/shoppinglist/templates/enable"
+    return this.http.post<any>(this.baseUrl + api, '');
+  }
+
+  newTemplate(): Observable<any> {
+    var api = "/shoppinglist/templates"
+    return this.http.post<any>(this.baseUrl + api, '');
+  }
+
+  //Create new Template based on Shopping List
+  makeTemplate(id: string): Observable<any> {
+    var api = "/shoppinglist/templates/"
+    return this.http.post<any>(this.baseUrl + api + id, '');
+  }
+
+  addTemplateItems(body: TplEdge, id: string): Observable<any> {
+    var api = "/shoppinglist/templates/details/"
+    return this.http.patch<SlistEdge>(this.baseUrl + api + id, body)
+  }
+
+  moveTemplateItem(body: TplEdge, id: string, key: string): Observable<any> {
+    var api = "/shoppinglist/templates/moveitem/"
+    return this.http.patch<TplEdge>(this.baseUrl + api + id + "/" + key, body)
+  }
+
+  //Update Template name, date
+  updateTemplate(body: ShopListsAll, id: string): Observable<any> {
+    var api = "/shoppinglist/templates/"
+    return this.http.patch<ShopListsAll>(this.baseUrl + api + id, body)
+  }
+
+  updateTemplateItem(body: TplEdge, id: string, id2: string): Observable<any> {
+    var api = "/shoppinglist/templates/details/"
+    return this.http.patch<TplEdge>(this.baseUrl + api + id + "/" + id2, body)
+  }
+
+  delTemplateItem(id: string, key: string): Observable<any> {
+    var api = "/shoppinglist/templates/details/"
     return this.http.delete<any>(this.baseUrl + api + id + "/" + key)
   }
 

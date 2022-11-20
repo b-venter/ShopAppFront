@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import {Observable, Observer} from 'rxjs';
+import {Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 
 
