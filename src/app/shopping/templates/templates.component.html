@@ -1,0 +1,42 @@
+<div class="spinner">
+    <mat-progress-spinner *ngIf="spinner" class="example-margin" color="accent" mode="indeterminate" [value]="30">
+    </mat-progress-spinner>
+  </div>
+
+  <h1>Templates</h1>
+
+<div>
+
+    <button *ngIf="!enabled" mat-raised-button color="accent" (click)="enableTemplates()">Enable templates</button>
+    
+    <div *ngIf="addnew">
+        <button mat-stroked-button color="primary" (click)="addNewTemplate()">New blank template</button>
+    </div>
+    
+    <mat-list class="list-center" *ngIf="tpls">
+        <mat-list-item *ngFor="let t of tpls"> 
+            <button mat-icon-button [matMenuTriggerFor]="slistmenu" aria-label="Template options menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              
+              <mat-menu #slistmenu="matMenu">
+                  <ng-template matMenuContent>
+                      <button mat-menu-item (click)="makeShopList(t.id)">
+                          <mat-icon color="accent">shopping_bag</mat-icon>
+                          <span>Create new shopping list...</span>
+                        </button>
+                    </ng-template>
+                </mat-menu>
+
+            <input #activateInput matInput disabled="true" [value]="t.label ? t.label : t.date" class="slist-input">
+            
+            <button mat-icon-button matTooltip="Rename shopping list" (click)="rename(activateInput, editIcon, t)">
+                <mat-icon #editIcon color="accent">edit</mat-icon>
+            </button>
+
+            <button mat-raised-button class="list-button" color="accent" [routerLink]="'details/' + t.id">View/Edit</button> 
+        </mat-list-item>
+        <mat-divider></mat-divider>
+    </mat-list>
+
+</div>

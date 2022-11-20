@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ViewChild,ElementRef } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 import { DataService } from '../data.service';
-import { SList, ShopListsAll } from '../interfaces';
+import { ShopListsAll } from '../interfaces';
 
 @Component({
   selector: 'app-shopping',
@@ -78,11 +77,18 @@ export class ShoppingComponent implements OnInit {
     );
   }
 
+  makeTemplate(i: string) {
+    this.dataService.makeTemplate(i).subscribe({
+      error: (e) => console.error(e),
+      complete: () => console.log("template created")
+    });
+  }
+
   
   //TODO: This should really b done as a custom directive
   //https://angular.io/guide/template-reference-variables#accessing-in-a-nested-template
   //https://ultimatecourses.com/blog/element-refs-in-angular-templates
-  reset(a: HTMLInputElement, b: MatIcon, c: ShopListsAll)
+  rename(a: HTMLInputElement, b: MatIcon, c: ShopListsAll)
   {
     var text = a.value;
     if(a.disabled == true){
