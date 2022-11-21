@@ -22,6 +22,7 @@ export class DetailsComponent implements OnInit {
   template!: TplDtl[];
   spinner:boolean;
   get200or204 = false;
+  name = "";
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +35,7 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTemplate(this.id);
+    this.getName(this.id.toString());
   }
 
   getTemplate(a: number) {
@@ -49,6 +51,17 @@ export class DetailsComponent implements OnInit {
         this.get200or204 = true;
         console.log(this.get200or204)
       }
+    });
+  }
+
+  getName(i: string): void {
+    this.dataService.getTemplateName(i).subscribe({
+      next: (a) => {
+        interface name {label:	string;}
+        var b = a[0]
+        var c = b as name
+        this.name = c.label
+      },
     });
   }
 
