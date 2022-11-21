@@ -92,6 +92,11 @@ export class DataService {
     return this.http.get<SList[]>(this.baseUrl + api + id);
   }
 
+  getShoppingListName(id: string): Observable<object[]> {
+    var api = "/shoppinglist/name/"
+    return this.http.get<object[]>(this.baseUrl + api + id);
+  }
+
   getTrolley(id: string, shop: string): Observable<SlistItem[]> {
     var api = "/shoppinglist/trolley/"
     return this.http.get<SlistItem[]>(this.baseUrl + api + id + '/' + shop);
@@ -147,6 +152,11 @@ export class DataService {
   getTemplateDetails(id: string): Observable<TplDtl[]> {
     var api = "/shoppinglist/templates/details/"
     return this.http.get<TplDtl[]>(this.baseUrl + api + id);
+  }
+
+  getTemplateName(id: string): Observable<object[]> {
+    var api = "/shoppinglist/templates/name/"
+    return this.http.get<object[]>(this.baseUrl + api + id);
   }
 
   enableTemplates(): Observable<any> {

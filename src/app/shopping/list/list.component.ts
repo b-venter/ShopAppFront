@@ -44,6 +44,7 @@ export class ListComponent implements OnInit {
   shoppingCosts = 0;
   trolleyCosts = 0;
   trolleyCostBool = false;
+  name = "";
 
   currency :curr[] = [
     {abbr: "USD", symbol: "$", icon: "🇺🇸", value: 0},
@@ -65,6 +66,7 @@ export class ListComponent implements OnInit {
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.getShoppingList();
+    this.getName(this.id.toString());
   }
 
   setCurrency(x: number){
@@ -79,6 +81,17 @@ export class ListComponent implements OnInit {
     }
     );
     
+  }
+
+  getName(i: string): void {
+    this.dataService.getShoppingListName(i).subscribe({
+      next: (a) => {
+        interface name {label:	string;}
+        var b = a[0]
+        var c = b as name
+        this.name = c.label
+      },
+    });
   }
 
   //Sets both the trolley counter and calculates trolley value
