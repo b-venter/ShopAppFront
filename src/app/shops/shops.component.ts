@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+/* Breakpoint observations */
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -22,6 +24,7 @@ export class ShopsComponent implements OnInit, AfterViewInit {
   spinner:boolean;
   displayedColumns: string[] = ['name', 'branch', 'city', 'country', 'edit'];
   dataSource = new MatTableDataSource<Shop>(); //Initiate data source class. Requires import of MatTableDataSource above.
+  isSmallScreen: boolean;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -29,8 +32,13 @@ export class ShopsComponent implements OnInit, AfterViewInit {
   constructor(
     private dataService: DataService,
     public dialog: MatDialog,
+    private breakpointObserver: BreakpointObserver,
   ) { 
     this.spinner = true;
+    this.isSmallScreen = breakpointObserver.isMatched('(max-width: 500px)');
+    if (this.isSmallScreen) {
+      this.displayedColumns = ['name', 'branch', 'edit'];
+    }
   }
 
   ngOnInit(): void {

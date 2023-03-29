@@ -1,7 +1,7 @@
 <div class="spinner">
     <mat-progress-spinner *ngIf="spinner" class="example-margin" color="accent" mode="indeterminate" [value]="30">
     </mat-progress-spinner>
-  </div>
+</div>
 <div>
     <h1 *ngIf="history">Historical view</h1>
     <h1 *ngIf="!history">Active lists</h1>
@@ -19,45 +19,55 @@
     <button mat-stroked-button color="primary" routerLink="templates">
         Templates
     </button>
+    <br>
+</div>
 
-    <mat-list class="list-center">
-        <mat-list-item *ngFor="let list of visible; let index = index"> 
-            <!--<span *ngIf="!edit" (click)="edit=true">{{list.date | date : 'HH:mm, EEEE dd LLL YYYY'}}</span> -->
-              
-            <button mat-icon-button [matMenuTriggerFor]="slistmenu" aria-label="Shopping list options menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              
-              <mat-menu #slistmenu="matMenu">
-                  <ng-template matMenuContent>
-                      <button mat-menu-item (click)="makeTemplate(list.id)">
-                          <mat-icon color="accent">difference</mat-icon>
-                          <span>Make template from...</span>
-                        </button>
-                    </ng-template>
-                </mat-menu>
-              
-            <input #activateInput matInput disabled="true" [value]="list.label ? list.label : list.date" class="slist-input">
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let list of visible; let index = index" class="list-center" [style.maxWidth.pc]="maxWidth">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+
+                    <span class="slist-input">{{list.label ? list.label : list.date}}</span>
+                    
+
+                </mat-panel-title>
+                
+                <mat-panel-description>
+                    <!--<span class="slist-date">{{list.date | date : 'dd LLL YYYY'}}</span>-->
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-menu #slistmenu="matMenu">
+                <ng-template matMenuContent>
+                    
+                </ng-template>
+            </mat-menu>
+
+            <input #activateInput matInput hidden="true" disabled="true" [value]="list.label ? list.label : list.date" class="slist-input">
+            
+            <span class="slist-date">{{list.date | date : 'dd LLL YYYY'}}</span>
+            <br>
+            
+
+            <button mat-icon-button (click)="makeTemplate(list.id)" matTooltip="Use as basis for a template...">
+                <mat-icon color="accent">difference</mat-icon>
+            </button>
             
             <button mat-icon-button matTooltip="Rename shopping list" (click)="rename(activateInput, editIcon, list)">
                 <mat-icon #editIcon color="accent">edit</mat-icon>
             </button>
                 
             <button mat-icon-button matTooltip="Click to make visible" *ngIf="list.hidden === true; else visible" (click)="toggleVisibility(list.hidden, list.id, index)">
-                    <mat-icon class="visibility" color="primary">visibility_off</mat-icon>
+                <mat-icon class="visibility" color="primary">visibility_off</mat-icon>
+            </button>
+            <ng-template #visible>
+                <button mat-icon-button matTooltip="Click to hide" (click)="toggleVisibility(list.hidden, list.id, index)">
+                    <mat-icon class="visibility" color="accent">visibility</mat-icon>
                 </button>
-                <ng-template #visible>
-                    <button mat-icon-button matTooltip="Click to hide" (click)="toggleVisibility(list.hidden, list.id, index)">
-                        <mat-icon class="visibility" color="accent">visibility</mat-icon>
-                    </button>
-                </ng-template>
-                <span class="slist -date">{{list.date | date : 'dd LLL YYYY'}}</span>
-                <button mat-raised-button color="accent" class="list-button" [routerLink]="'/shopping/list/' + list.id">Open</button>
-
-
-                <mat-divider></mat-divider>
+            </ng-template>
+                
+            <button mat-stroked-button color="accent" class="list-button" [routerLink]="'/shopping/list/' + list.id">Open</button>
             
-        </mat-list-item>
         
-    </mat-list>
-</div>
+        </mat-expansion-panel>
+    </mat-accordion>

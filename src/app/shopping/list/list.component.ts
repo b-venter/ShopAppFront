@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+/* Breakpoint observations */
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 import {Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -45,6 +46,8 @@ export class ListComponent implements OnInit {
   trolleyCosts = 0;
   trolleyCostBool = false;
   name = "";
+  screenSize: boolean;
+  fontSize = "normal";
 
   currency :curr[] = [
     {abbr: "USD", symbol: "$", icon: "🇺🇸", value: 0},
@@ -59,18 +62,27 @@ export class ListComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     public dialog: MatDialog,
+    private breakpointObserver: BreakpointObserver,
   ) { 
     this.badge = [];
+    this.screenSize = breakpointObserver.isMatched('(max-width: 490px)');
   }
 
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.getShoppingList();
     this.getName(this.id.toString());
+    this.setFontSize();
   }
 
   setCurrency(x: number){
     this.currencySel = x;
+  }
+
+  setFontSize(): void {
+    if (this.screenSize) {
+      this.fontSize = "small";
+    }
   }
 
   getShoppingList(): void {
@@ -81,6 +93,68 @@ export class ListComponent implements OnInit {
     }
     );
     
+  }
+
+  //Update shopping list is used to dynamically update shopList when add/edit/remove/move
+  updateShoppingList(s: SList, a: string, b?: SList) {
+    switch(a) {
+      case "ADD": {
+        var si = this.shopList.findIndex(l => l.shop === s.shop);
+        if (si < 0) {
+          //-1 if not found. So need to add Shop & Items
+          this.shopList.push(s)
+        } else {
+          //0 or more, entry for Shop already exists. Only add Items
+          this.shopList[si].items.push(s.items[0])
+        }
+        break;
+      }
+      case "DEL":{
+        var si = this.shopList.findIndex(l => l.shop === s.shop);
+        var ii = this.shopList[si].items.findIndex(m => m.item_id === s.items[0].item_id);
+        this.shopList[si].items.splice(ii, 1);
+        break;
+      }
+      case "MOV":{
+        if (typeof b !== 'undefined') {
+          //Get Indices for current shop, new shop and item 
+          var si = this.shopList.findIndex(l => l.shop === s.shop);
+          var ni = this.shopList.findIndex(k => k.shop === b.shop);
+          var ii = this.shopList[si].items.findIndex(m => m.item_id === s.items[0].item_id);
+               
+          //Remove from current shop - note adjustment needed if last item.
+          if (this.shopList[si].items.length === 1) {
+            this.shopList.splice(si, 1);
+          } else {
+            this.shopList[si].items.splice(ii, 1);
+          }
+
+          //Insert in new shop - existing or not
+          if (ni < 0) {
+            //-1 if not found. So need to add Shop & Items
+            this.shopList.push(b)
+          } else {
+            //0 or more, entry for Shop already exists. Only add Items
+            this.shopList[ni].items.push(b.items[0])
+          }
+        } else {
+          console.error("Invalid destination shop.");
+        }
+        break;
+      }
+      case "EDT": {
+          var si = this.shopList.findIndex(l => l.shop === s.shop);
+          var ii = this.shopList[si].items.findIndex(m => m.item_id === s.items[0].item_id);
+          this.shopList[si].items.splice(ii, 1, s.items[0]);
+        break;
+      }
+      default: {
+        console.error("No suitable action specified");
+        break;
+      }
+
+    }
+    this.setTrolleyInit();
   }
 
   getName(i: string): void {
@@ -131,6 +205,7 @@ export class ListComponent implements OnInit {
   }
 
   totalTrolleys() :void{
+    this.trolleyCosts = 0;
     var s = this.shopList;
     var tData: SlistItem[] = [];
     for (let i of s) {
@@ -148,13 +223,6 @@ export class ListComponent implements OnInit {
   }
 
 
-  moveItemToOtherShop(b:SlistEdge, key :string): void {
-    this.dataService.moveShopListItem(b, this.id.toString(), key).subscribe(
-      result => {
-        this.getShoppingList();
-      });
-    }
-
   setTrolleyCounter(i: number, in2: number): void {
     var a = this.shopList[i].items[in2];
     a.trolley = !a.trolley;
@@ -165,21 +233,24 @@ export class ListComponent implements OnInit {
       result => {
         if (a.trolley) {
           this.badge[i]++;
+          this.trolleyCosts += a.qty * a.price;
         } else {
           this.badge[i]--;
+          this.trolleyCosts -= a.qty * a.price;
         }
       }
     )
   }
 
-  delShopListItem(key: string){
+  delShopListItem(key: SlistItem, shopD: string){
     //warning modal
     var a = confirm("Do you really want to remove this item from your shopping list?");
     if (a) {
-      this.dataService.delShopListItems(this.id.toString(), key).subscribe(
+      this.dataService.delShopListItems(this.id.toString(), key.edge_id).subscribe(
         result => {
           //TODO: Remove item from ShoppingList array or get ShoppingList anew
-          this.getShoppingList();
+          var itemD: SList = {shop: shopD, items: [key]}
+          this.updateShoppingList(itemD,"DEL");
         });
     }
   }
@@ -201,15 +272,23 @@ export class ListComponent implements OnInit {
 
       //Set up body for POST
       var post :SlistEdge = {"_to": to, "_from": from, date: 0, price: result.form.listPrice, qty: result.form.listQty, currency: result.form.listCurrency, trolley: result.form.listTrolley, special: result.form.listSpecial, tag: ""}
+      var shopA: string = result.form.listShop;
+      var itemA: string = result.iteml;
+      var nettA: number = result.nett;
+      var nettuA: string = result.nettu;
 
       //Run POST and retrieve key
-      this.dataService.addShopListItems(post, this.id.toString()).subscribe(
-        result => {
-          //if successful, re-populate the ShoppingList
-          this.getShoppingList();
-        }
-      )
-      //TODO: Toaster pop-up for success
+      this.dataService.addShopListItems(post, this.id.toString()).subscribe({
+        next: (result) => {
+          //if successful, update the ShoppingList array
+          //result from post contains item_id
+          var newItem: SList = {shop: shopA, items: [{label: itemA, nett: nettA, nett_unit: nettuA, price: post.price, currency: post.currency, qty: post.qty, trolley: post.trolley, special: post.special, tag: "", edge_id: result, item_id: to, shop_id: from}]}
+          this.updateShoppingList(newItem, "ADD");
+        },
+        error: (err) => console.error(err)
+        //TODO: Toaster pop-up for success
+      })
+
     });
   }
 
@@ -234,7 +313,14 @@ export class ListComponent implements OnInit {
       var patch :SlistEdge = {"_to": to, "_from": from, date: 0, price: result.form.listPrice, qty: result.form.listQty, currency: result.form.listCurrency, trolley: result.form.listTrolley, special: result.form.listSpecial, tag: ""}
       this.dataService.updateTrolley(patch, this.id.toString(), it.edge_id).subscribe(
         result => {
-          this.getShoppingList();
+          var itemE: SList = {shop: sh, items: [it]};
+          itemE.items[0].currency = patch.currency;
+          itemE.items[0].price = patch.price;
+          itemE.items[0].qty = patch.qty;
+          itemE.items[0].special = patch.special;
+          itemE.items[0].tag = patch.tag;
+          itemE.items[0].trolley = patch.trolley;
+          this.updateShoppingList(itemE, "EDT");
         }
       )
       //TODO: Toaster pop-up for success
@@ -257,10 +343,18 @@ export class ListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       var to :string = result.item;
       var from :string = result.shop;
+      var froml :string = result.shopl;
 
       //Set up body for PATCH. The _from should be different to what was in "it"
       var patch :SlistEdge = {"_to": to, "_from": from, date: 0, price: result.form.listPrice, qty: result.form.listQty, currency: result.form.listCurrency, trolley: result.form.listTrolley, special: result.form.listSpecial, tag: ""}
-      this.moveItemToOtherShop(patch, it.edge_id);
+      
+      this.dataService.moveShopListItem(patch, this.id.toString(), it.edge_id).subscribe(
+          result => {
+            var itemM: SList = {shop: sh, items: [it]};
+            var itemN: SList = {shop: froml, items: [it]}
+            itemN.items[0].edge_id = result;
+            this.updateShoppingList(itemM, "MOV", itemN);
+          });
 
       //TODO: Toaster pop-up for success
     });
@@ -419,12 +513,15 @@ export class AddtoList implements OnInit {
       this.dialogRef.close();
     }
     save() {
-      console.log("ShopObject:" + this.filteredShopObject)     
         this.dialogRef.close(
           {
             form: this.shopList.value,
             shop: this.filteredShopObject !== undefined ? this.filteredShopObject[this.filteredSelect].id : this.shopInit.id,
+            shopl: this.filteredShopObject !== undefined ? this.filteredShopObject[this.filteredSelect].name : this.shopInit.name,
             item: this.filteredItemObject !== undefined ? this.filteredItemObject[0].id : this.itemInit.id,
+            iteml: this.filteredItemObject !== undefined ? this.filteredItemObject[0].name : this.itemInit.name,
+            nett: this.filteredItemObject !== undefined ? this.filteredItemObject[0].nett : this.itemInit.nett,
+            nettu: this.filteredItemObject !== undefined ? this.filteredItemObject[0].nett_unit : this.itemInit.nett_unit,
           }
         );  
     }
