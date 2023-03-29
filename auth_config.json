@@ -1,7 +1,0 @@
-{
-    "domain": "dev-6rfxcq94.eu.auth0.com",
-    "clientId": "jIxUV4Oc4Jjarr97RIkD0csE9OdooPOw",
-    "audience": "https://shopapp.backend",
-    "apiUri": "http://localhost:4000",
-    "appUri": "http://localhost:4200"
-}
