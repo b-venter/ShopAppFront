@@ -1,5 +1,4 @@
-<div class="overall">
-  <h1>Shopping List: {{name}}</h1>
+<h1>Shopping List: {{name}}</h1>
   <button mat-button [matMenuTriggerFor]="menu">
     {{currency[currencySel].icon}} {{currency[currencySel].abbr}}
     <mat-icon color="accent">arrow_drop_down</mat-icon>
@@ -10,6 +9,7 @@
   <button mat-mini-fab matTooltip="Add item" (click)="openDialog()">
     <mat-icon>add</mat-icon>
   </button>
+<div class="overall">
 
   <!--Per shop accordion-->  
   <cdk-accordion class="shop-accordion">
@@ -27,9 +27,9 @@
             <button mat-icon-button>
                 <mat-icon matBadge={{badge[index]}} matBadgeColor="accent" [routerLink]="'../../trolley/'+id+'/'+list.items[0].shop_id" matTooltip="Click to view trolley" >shopping_cart&hellip;</mat-icon>
             </button>
-            <span class="shop-accordion-item-description">
+            <!--<span class="shop-accordion-item-description">
               Click to {{ accordionItem.expanded ? 'close' : 'open' }}
-            </span>
+            </span>-->
             <mat-chip-list>
             <mat-chip color="primary" selected>{{currency[currencySel].symbol}}{{costs[index].cost | number: '1.2-2'}}</mat-chip>
           </mat-chip-list>
@@ -42,14 +42,21 @@
             [attr.id]="'accordion-body-' + index"
             [attr.aria-labelledby]="'accordion-header-' + index">
 
-            <mat-list>
-                <mat-divider></mat-divider>
-                <mat-list-item *ngFor="let items of list.items; let in2 = index">
-                  <button mat-icon-button (click)="editDialog(items, list.shop)">
-                    <mat-icon>edit</mat-icon>
-                  </button>
+            <mat-accordion>
+                <mat-expansion-panel *ngFor="let items of list.items; let in2 = index" hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      
+                      <span [style.fontSize]="fontSize">{{items.qty}}x&nbsp;{{items.nett}}{{items.nett_unit}} &nbsp; {{items.label}} @ {{currency[currencySel].symbol}}{{items.price * items.qty | number: '1.2-2'}}</span>
+                    
+                    </mat-panel-title>
+                    <mat-panel-description></mat-panel-description>
+                  </mat-expansion-panel-header>
 
-                    <span>{{items.qty}}x&nbsp;{{items.nett}}{{items.nett_unit}}</span> &nbsp;{{items.label}} @ {{currency[currencySel].symbol}}{{items.price * items.qty | number: '1.2-2'}}
+                    
+                    <button mat-icon-button matTooltip="Edit quantity and price" (click)="editDialog(items, list.shop)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
 
                     <button mat-icon-button matTooltip="Move to another trolley" (click)="moveDialog(items, list.shop)" class="toggle-button">
                       <mat-icon color="accent">low_priority</mat-icon>
@@ -64,21 +71,19 @@
                       <mat-icon *ngIf="items.trolley" matTooltip="Remove from the trolley" color="primary" (click)="setTrolleyCounter(index, in2)">remove_shopping_cart</mat-icon>
                     </button>
 
-                    <button mat-icon-button matTooltip="Remove from shopping list" (click)="delShopListItem(items.edge_id)">
+                    <button mat-icon-button matTooltip="Remove from shopping list" (click)="delShopListItem(items, list.shop)">
                       <mat-icon color="warn">
                         delete
                       </mat-icon>
                     </button>
-
-                    <mat-divider></mat-divider>  
-                </mat-list-item>
-            </mat-list>
+                  </mat-expansion-panel>
+                </mat-accordion>
 
           </div>
 
         </cdk-accordion-item>
       </cdk-accordion>      
-
+    </div>
       <!--Total costs-->
       <div class="total-chip">
         <br>
@@ -90,5 +95,3 @@
         <mat-chip *ngIf="!trolleyCostBool" color="warn" selected>{{currency[currencySel].symbol}}{{shoppingCosts | number: '1.2-2'}}</mat-chip>
         <mat-chip *ngIf="trolleyCostBool" color="warn" selected>{{currency[currencySel].symbol}}{{trolleyCosts | number: '1.2-2'}}</mat-chip>
       </div>
-
-</div>

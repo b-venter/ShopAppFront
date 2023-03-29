@@ -41,6 +41,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { CdkAccordionModule } from '@angular/cdk/accordion'; 
 
@@ -100,6 +101,7 @@ import { NgChartsModule } from 'ng2-charts';
     MatAutocompleteModule,
     MatChipsModule,
     MatProgressSpinnerModule,
+    MatExpansionModule,
     AuthModule.forRoot({
       ...env.auth,
       httpInterceptor: {
