@@ -13,6 +13,11 @@ import {map, startWith} from 'rxjs/operators';
 import { Item, Shop, SList, SlistEdge, SlistItem, SlistEdgeItem, TrendItem } from '../../interfaces';
 import { DataService } from '../../data.service';
 
+//Table option
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+
 //Chart specific imports
 import { ViewChild } from '@angular/core';
 import { Chart, ChartConfiguration, ChartEvent, ChartType } from 'chart.js';
@@ -48,6 +53,7 @@ export class ListComponent implements OnInit {
   name = "";
   screenSize: boolean;
   fontSize = "normal";
+  renderDefaultType = true; // true = accordion | false = table
 
   currency :curr[] = [
     {abbr: "USD", symbol: "$", icon: "🇺🇸", value: 0},
@@ -57,6 +63,12 @@ export class ListComponent implements OnInit {
     {abbr: "ZAR", symbol: "R", icon: "🇿🇦", value: 0},
   ];
   currencySel = 3;
+
+  //Table option
+  displayedColumns: string[] = ['label', 'qty', 'nett', 'cost', 'trolley'];
+  dataSource = new MatTableDataSource<SlistItem>(); //Initiate data source class. Requires import of MatTableDataSource above.
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private route: ActivatedRoute,
@@ -73,6 +85,7 @@ export class ListComponent implements OnInit {
     this.getShoppingList();
     this.getName(this.id.toString());
     this.setFontSize();
+    this.getShoppingListTable();
   }
 
   setCurrency(x: number){
@@ -92,7 +105,36 @@ export class ListComponent implements OnInit {
       complete: () => this.setTrolleyInit(),
     }
     );
-    
+  }
+
+  getShoppingListTable(): void {
+    this.dataService.getShoppingList(this.id.toString()).subscribe({
+      next: (list) => {
+        
+        var list2: SlistItem[] = [];
+        list.forEach(function (value){
+          value.items.forEach( function (value2) {
+            var listx = value2;
+            list2.push(listx)
+          })
+        });
+        
+        this.dataSource.data = list2;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: e => console.error(e),
+    }
+    );
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   //Update shopping list is used to dynamically update shopList when add/edit/remove/move
@@ -242,6 +284,8 @@ export class ListComponent implements OnInit {
     )
   }
 
+
+
   delShopListItem(key: SlistItem, shopD: string){
     //warning modal
     var a = confirm("Do you really want to remove this item from your shopping list?");
@@ -370,7 +414,6 @@ export class ListComponent implements OnInit {
       }
     });
   }
-
 
 
 }
