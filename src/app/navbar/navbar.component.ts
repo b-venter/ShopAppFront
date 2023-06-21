@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-    this.auth.logout({ returnTo: "http://"+window.location.host+"/loggedout" });
+    this.auth.logout({ logoutParams:{returnTo: "http://"+window.location.host+"/loggedout"} });
   }
 
   checkAdmin() :void {

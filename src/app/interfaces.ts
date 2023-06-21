@@ -4,8 +4,10 @@ export interface EnvProperties {
 		auth: {
 		  domain: string;
 		  clientId: string;
-		  audience?: string | undefined;
-		  redirectUri: string;
+		  authorizationParams: {
+			audience?: string | undefined;
+			redirect_uri: string;
+		  }
 		};
 		httpInterceptor: {
 		  allowedList: string[];

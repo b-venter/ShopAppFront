@@ -7,13 +7,18 @@ const { domain, clientId, audience, apiUri } = config as {
   apiUri: string;
 };
 
+/*
+Note a number of changes introduced for auth0 v2 api
+ */
 export const environment: EnvProperties = {
-  production: false,
+  production: true,
   auth: {
-    domain,
-    clientId,
-    ...(audience && audience !== 'YOUR_API_IDENTIFIER' ? { audience } : null),
-    redirectUri: window.location.origin,
+    domain: config.domain,
+    clientId: config.clientId,
+    authorizationParams: {
+      ...(audience && audience !== 'YOUR_API_IDENTIFIER' ? { audience } : null),
+      redirect_uri: window.location.origin,
+    }
   },
   httpInterceptor: {
     allowedList: [`${apiUri}/*`], /*Or /simple/*, only calls to the api endpoint "/simple/" get a bearer attached*/
