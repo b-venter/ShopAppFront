@@ -14,7 +14,7 @@
   <mat-menu #menu="matMenu">
     <button *ngFor="let c of currency; let i = index" mat-menu-item (click)="setCurrency(i)">{{currency[i].icon}} {{currency[i].abbr}}</button>
   </mat-menu>
-  <button mat-mini-fab matTooltip="Add item" (click)="openDialog()">
+  <button mat-mini-fab color="accent" matTooltip="Add item" (click)="openDialog()">
     <mat-icon>add</mat-icon>
   </button>
   <br>
@@ -40,9 +40,9 @@
             <!--<span class="shop-accordion-item-description">
               Click to {{ accordionItem.expanded ? 'close' : 'open' }}
             </span>-->
-            <mat-chip-list>
+            <mat-chip-listbox>
             <mat-chip color="primary" selected>{{currency[currencySel].symbol}}{{costs[index].cost | number: '1.2-2'}}</mat-chip>
-          </mat-chip-list>
+          </mat-chip-listbox>
           </div>
 
           <div
