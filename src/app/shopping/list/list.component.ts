@@ -265,7 +265,9 @@ export class ListComponent implements OnInit {
   }
 
 
-  setTrolleyCounter(i: number, in2: number): void {
+  setTrolleyCounter(i: number, in2: number, event: MouseEvent): void {
+    event.stopPropagation(); //These two "event" actions prevent the accordion from being triggered
+    event.preventDefault();
     var a = this.shopList[i].items[in2];
     a.trolley = !a.trolley;
     //date to be updated by api
@@ -460,6 +462,8 @@ export class AddtoList implements OnInit {
   filteredItemObject!: Item[] | undefined;
   itemSearchLive = true;
 
+  priceRetrieved = 0;
+
   private shopFilter(value: string): string[] {
 
     var a: Shop[]
@@ -599,7 +603,12 @@ export class AddtoList implements OnInit {
         this.filteredItemObject = [];
         this.filteredItemObject.push(a);
         this.itemSearchLive = false;
-        console.log(this.filteredItemObject);
+        //On select of item, populate price from latest price. If no previous price, priceRetrieved iss et to inital value of 0 anyway.
+        this.dataService.getTrendItem(this.filteredItemObject[0].id).subscribe({
+          next: (a) => this.priceRetrieved = a[0].price,
+          error: (err) => console.error(err),
+          complete: () => this.shopList.patchValue({listPrice: this.priceRetrieved})
+        });
       }
     }
 

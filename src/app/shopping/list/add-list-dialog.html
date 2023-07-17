@@ -57,7 +57,9 @@
     <span *ngIf="filteredItemObject && filteredItemObject?.length == 1"> {{filteredItemObject[0].nett}}&nbsp;{{filteredItemObject[0].nett_unit}} </span>
 
 
+    <br>
     <mat-checkbox matInput formControlName="listSpecial" color="accent" *ngIf="!move">On special!</mat-checkbox>
+    <br>
 
 
     <!--QUANTITY-->
@@ -66,7 +68,7 @@
         <input type="number" min="0" matInput formControlName="listQty" placeholder="0">
     </mat-form-field>
 
-    <mat-slide-toggle class="toggle-button" matTooltip="Put in the trolley" formControlName="listTrolley" *ngIf="!move">Trolley</mat-slide-toggle>
+    &nbsp; <mat-slide-toggle class="toggle-button" matTooltip="Put in the trolley" formControlName="listTrolley" *ngIf="!move">Trolley</mat-slide-toggle>
 
     <mat-form-field appearance="fill" *ngIf="!move">
       <mat-label>Currency</mat-label>
