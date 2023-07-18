@@ -43,7 +43,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatExpansionModule } from '@angular/material/expansion';
 
-import { CdkAccordionModule } from '@angular/cdk/accordion'; 
+import { CdkAccordionModule } from '@angular/cdk/accordion';
 
 import { AuthModule } from '@auth0/auth0-angular';
 import { AuthHttpInterceptor } from '@auth0/auth0-angular';

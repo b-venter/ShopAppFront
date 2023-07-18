@@ -55,19 +55,19 @@
             <mat-accordion>
                 <mat-expansion-panel *ngFor="let items of list.items; let in2 = index" hideToggle>
                   <mat-expansion-panel-header>
-                    <mat-panel-title>
-                      
-                      <span [style.fontSize]="fontSize">{{items.qty}}x&nbsp;{{items.nett}}{{items.nett_unit}} &nbsp; {{items.label}} @ {{currency[currencySel].symbol}}{{items.price * items.qty | number: '1.2-2'}}</span>
                     
-                    </mat-panel-title>
                     <mat-panel-description>
+                      <span [style.fontSize]="fontSize">{{items.qty}}x&nbsp;{{items.nett}}{{items.nett_unit}} &nbsp; {{items.label}} @ {{currency[currencySel].symbol}}{{items.price * items.qty | number: '1.2-2'}}</span>
+                    </mat-panel-description>
+                    <mat-panel-title>
                       <button mat-icon-button class="toggle-button" (click)="setTrolleyCounter(index, in2, $event)">
                         <mat-icon *ngIf="!items.trolley" matTooltip="Put in the trolley" color="accent" >shopping_cart</mat-icon>
                         <mat-icon *ngIf="items.trolley" matTooltip="Remove from the trolley" color="primary">remove_shopping_cart</mat-icon>
                       </button>
-                    </mat-panel-description>
-                  </mat-expansion-panel-header>
                     
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                    <p [style.textAlign]="'center'">
                     <button mat-icon-button matTooltip="Edit quantity and price" (click)="editDialog(items, list.shop)">
                       <mat-icon>edit</mat-icon>
                     </button>
@@ -85,7 +85,7 @@
                         delete
                       </mat-icon>
                     </button>
-
+                  </p>
                   </mat-expansion-panel>
                 </mat-accordion>
 

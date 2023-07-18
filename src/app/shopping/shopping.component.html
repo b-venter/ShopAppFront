@@ -54,7 +54,7 @@
             </button>
             
             <button mat-icon-button matTooltip="Rename shopping list" (click)="rename(activateInput, editIcon, list)">
-                <mat-icon #editIcon color="accent">edit</mat-icon>
+                <mat-icon #editIcon color="accent">text_format</mat-icon>
             </button>
                 
             <button mat-icon-button matTooltip="Click to make visible" *ngIf="list.hidden === true; else visible" (click)="toggleVisibility(list.hidden, list.id, index)">
@@ -65,6 +65,8 @@
                     <mat-icon class="visibility" color="accent">visibility</mat-icon>
                 </button>
             </ng-template>
+
+            &nbsp;
                 
             <button mat-stroked-button color="accent" class="list-button" [routerLink]="'/shopping/list/' + list.id">Open</button>
             

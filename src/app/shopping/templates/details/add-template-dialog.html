@@ -15,7 +15,7 @@
     </mat-form-field>
 
     <mat-list *ngIf="itemSearchLive">
-      <mat-list-item *ngFor="let option of filteredItems | async; let i = index">
+      <mat-list-item *ngFor="let option of filteredItems | async; let i = index" lines="3">
         <span *ngIf="filteredItemObject">
           {{filteredItemObject[i].name}} - {{filteredItemObject[i].brand}} ({{filteredItemObject[i].nett}}{{filteredItemObject[i].nett_unit}})
           <mat-icon (click)="selectItem(i)" class="cursor">
@@ -25,7 +25,7 @@
       </mat-list-item>
     </mat-list>
     <mat-list *ngIf="!itemSearchLive">
-      <mat-list-item *ngFor="let item of filteredItemObject">
+      <mat-list-item *ngFor="let item of filteredItemObject" lines="3">
         <span>
           {{item.name}} - {{item.brand}} ({{item.nett}}{{item.nett_unit}})
           <mat-icon (click)="clearItems()" class="cursor">
