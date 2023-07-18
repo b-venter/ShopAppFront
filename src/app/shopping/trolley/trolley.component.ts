@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit, } from '@angular/core';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 import { MatPaginator } from '@angular/material/paginator';
@@ -20,7 +20,7 @@ export class TrolleyComponent implements OnInit, AfterViewInit {
   id!: number;
   shop!: number;
   dataSource = new MatTableDataSource<SlistItem>(); //Initiate data source class. Requires import of MatTableDataSource above.
-  displayedColumns: string[] = ['price', 'name', 'nett', 'qty', 'price2'];
+  displayedColumns: string[] = ['name', 'qty', 'price2']; //['price', 'name', 'nett', 'qty', 'price2']
 
   costs: number = 0;
   shopDetail!: Shop;

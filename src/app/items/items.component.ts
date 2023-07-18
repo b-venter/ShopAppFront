@@ -21,7 +21,7 @@ import { TrendItemDialog } from '../shopping/list/list.component';
 export class ItemsComponent implements OnInit, AfterViewInit {
 
   spinner:boolean;
-  displayedColumns: string[] = ['name', 'nett', 'nett_unit', 'brand', 'edit'];
+  displayedColumns: string[] = ['name', 'nett_unit', 'brand', 'edit'];
   dataSource = new MatTableDataSource<Item>(); //Initiate data source class. Requires import of MatTableDataSource above.
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

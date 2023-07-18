@@ -19,15 +19,15 @@
               <!-- Price -->
               <ng-container matColumnDef="price">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Indiv. Price </th>
-                <td mat-cell *matCellDef="let item"> {{item.currency}}&nbsp;{{item.price | number:'1.2-2'}} </td>
-                <td mat-footer-cell *matFooterCellDef> <b>Total</b> </td>
+                <td mat-cell *matCellDef="let item"> {{item.price | number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
               </ng-container>
             
               <!-- Name -->
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>
                 <td mat-cell *matCellDef="let item"> {{item.label}} </td>
-                <td mat-footer-cell *matFooterCellDef> </td>
+                <td mat-footer-cell *matFooterCellDef [style.fontWeight]="'bold'">Total</td>
               </ng-container>
 
                 <!-- Nett -->
@@ -48,7 +48,7 @@
               <ng-container matColumnDef="price2">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
                 <td mat-cell *matCellDef="let item"> {{combinedPrice(item.price, item.qty) | number:'1.2-2'}} </td>
-                <td mat-footer-cell *matFooterCellDef> {{costs | number:'1.2-2'}} </td>
+                <td mat-footer-cell *matFooterCellDef [style.fontWeight]="'bold'"> {{costs | number:'1.2-2'}} </td>
               </ng-container>
               
             

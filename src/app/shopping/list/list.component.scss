@@ -10,9 +10,9 @@ table {
 }
 .shop-accordion {
     display: block;
-    width: 80%;
+    width: 90%;
     margin: auto;
-    //min-width: 500px;
+    max-width: 500px;
   }
   
   .shop-accordion-item {
@@ -66,6 +66,6 @@ table {
 
 .paginator {
   margin: auto;
-  width: 90%;
+  width: 100%;
   //min-width: 500px;
 }

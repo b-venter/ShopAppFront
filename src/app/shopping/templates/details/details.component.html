@@ -44,33 +44,39 @@
         [attr.id]="'accordion-body-' + index"
         [attr.aria-labelledby]="'accordion-header-' + index">
 
-        <mat-list>
-            <mat-divider></mat-divider>
-            <mat-list-item *ngFor="let items of t.items; let in2 = index">
-              <button mat-icon-button (click)="editDialog(items, t.shop)">
-                <mat-icon>edit</mat-icon>
-              </button>
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let items of t.items; let in2 = index" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
 
-                <span>{{items.qty}}x&nbsp;{{items.nett}}{{items.nett_unit}}</span> &nbsp;{{items.label}}
+              </mat-panel-title>
+              <mat-panel-description>
+                <span>{{items.qty}}x&nbsp;{{items.nett}}{{items.nett_unit}}&nbsp;{{items.label}}</span>
+              </mat-panel-description>
+              
+            </mat-expansion-panel-header>
+            <p [style.textAlign]="'center'">
+            <button mat-icon-button (click)="editDialog(items, t.shop)">
+              <mat-icon>edit</mat-icon>
+            </button>
 
-                <button mat-icon-button matTooltip="Move to another trolley" (click)="moveDialog(items, t.shop)" class="toggle-button">
-                  <mat-icon color="accent">low_priority</mat-icon>
-                </button>
+            <button mat-icon-button matTooltip="Move to another trolley" (click)="moveDialog(items, t.shop)" class="toggle-button">
+              <mat-icon color="accent">low_priority</mat-icon>
+            </button>
 
-                <button mat-icon-button matTooltip="View price trend" class="toggle-button" (click)="trendDialog(items.item_id)">
-                  <mat-icon color="accent">trending_up</mat-icon>
-                </button>
-                
+            <button mat-icon-button matTooltip="View price trend" class="toggle-button" (click)="trendDialog(items.item_id)">
+              <mat-icon color="accent">trending_up</mat-icon>
+            </button>
 
-                <button mat-icon-button matTooltip="Remove from shopping list" (click)="delShopListItem(items.edge_id)">
-                  <mat-icon color="warn">
-                    delete
-                  </mat-icon>
-                </button>
+            <button mat-icon-button matTooltip="Remove from shopping list" (click)="delShopListItem(items.edge_id)">
+              <mat-icon color="warn">
+                delete
+              </mat-icon>
+            </button>
 
-                <mat-divider></mat-divider>  
-            </mat-list-item>
-        </mat-list>
+          </p>
+          </mat-expansion-panel>
+        </mat-accordion>
 
       </div>
 

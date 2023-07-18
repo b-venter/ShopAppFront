@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { MatIcon } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { DataService } from '../../data.service';
 import { ShopListsAll } from '../../interfaces';
@@ -21,6 +22,7 @@ export class TemplatesComponent implements OnInit {
   constructor(
     private location: Location,
     private dataService: DataService,
+    private _snackBar: MatSnackBar,
   ) {
     this.spinner = true;
    }
@@ -80,8 +82,17 @@ export class TemplatesComponent implements OnInit {
   makeShopList(i: string) {
     this.dataService.makeShoppingList(i).subscribe({
       error: (e) => console.error(e),
-      complete: () => console.log("template created")
+      complete: () => this.openSnackBar("Shopping list created.", "Close")
     });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
+
+  noexpansion(a: MouseEvent){
+    a.stopPropagation(); //These two "event" actions prevent the accordion from being triggered when typing new name
+    a.preventDefault();
   }
 
   rename(a: HTMLInputElement, b: MatIcon, c: ShopListsAll)
