@@ -201,6 +201,12 @@ export class DataService {
     return this.http.delete<any>(this.baseUrl + api + id + "/" + key)
   }
 
+  //Delete Template
+  delTemplate(id: string): Observable<any> {
+    var api = "/shoppinglist/templates/"
+    return this.http.delete<any>(this.baseUrl + api + id)
+  }
+
   /* TREND API CALLS */
   /***************** */
 

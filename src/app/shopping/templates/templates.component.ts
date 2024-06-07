@@ -86,6 +86,19 @@ export class TemplatesComponent implements OnInit {
     });
   }
 
+
+  delTemplate(t: ShopListsAll, i: number) {
+    if (confirm("Do you want to delete the template "+t.label+" ?")){
+      this.dataService.delTemplate(t.id).subscribe({
+        error: (e) => console.error(e),
+        complete: () => {
+          this.tpls.splice(i, 1)
+          this.openSnackBar("Template "+t.label+" deleted.", "Close")
+        }
+      });
+    }
+  }
+
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action);
   }
@@ -107,7 +120,7 @@ export class TemplatesComponent implements OnInit {
       this.dataService.updateTemplate(c, c.id).subscribe({
         next: (success) => {
           a.disabled = true;
-          b._elementRef.nativeElement.innerHTML = "edit";
+          b._elementRef.nativeElement.innerHTML = "text_format";
         },
         error: error => console.error(error)
       }

@@ -14,7 +14,7 @@
     </div>
     
         <mat-accordion class="list-center" *ngIf="tpls" [style.textAlign]="'center'">
-            <mat-expansion-panel *ngFor="let t of tpls"> 
+            <mat-expansion-panel *ngFor="let t of tpls; index as i"> 
                 <mat-expansion-panel-header>
                 <input #activateInput matInput disabled="true" [value]="t.label ? t.label : t.date" class="slist-input" (click)="noexpansion($event)">
             </mat-expansion-panel-header>
@@ -25,6 +25,10 @@
 
                 <button mat-icon-button (click)="makeShopList(t.id)" matTooltip="Create new shopping list">
                     <mat-icon color="accent">shopping_bag</mat-icon>
+                </button>
+
+                <button mat-icon-button (click)="delTemplate(t, i)" matTooltip="Delete template">
+                    <mat-icon color="warn">delete</mat-icon>
                 </button>
                 
                 <button mat-stroked-button class="list-button" color="accent" [routerLink]="'details/' + t.id">Open</button> 
