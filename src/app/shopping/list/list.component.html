@@ -57,7 +57,7 @@
                   <mat-expansion-panel-header>
                     
                     <mat-panel-description>
-                      <span [style.fontSize]="fontSize">{{items.qty}}x&nbsp;{{items.nett}}{{items.nett_unit}} &nbsp; {{items.label}} @ {{currency[currencySel].symbol}}{{items.price * items.qty | number: '1.2-2'}}</span>
+                      <span [style.fontSize]="fontSize">{{items.qty}}x&nbsp;{{items.nett}}{{items.nett_unit}} &nbsp; {{items.label}} &#64; {{currency[currencySel].symbol}}{{items.price * items.qty | number: '1.2-2'}}</span>
                     </mat-panel-description>
                     <mat-panel-title>
                       <button mat-icon-button class="toggle-button" (click)="setTrolleyCounter(index, in2, $event)">

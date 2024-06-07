@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dshopsmart:build:production"
+              "buildTarget": "dshopsmart:build:production"
             },
             "development": {
-              "browserTarget": "dshopsmart:build:development"
+              "buildTarget": "dshopsmart:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dshopsmart:build"
+            "buildTarget": "dshopsmart:build"
           }
         },
         "test": {
